@@ -8,7 +8,6 @@ namespace CollegeApp.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize(Roles ="Superadmin")]
     public class StudentController : ControllerBase
     {
 
@@ -26,6 +25,7 @@ namespace CollegeApp.Controllers
         [ProducesResponseType(401)]
         [ProducesResponseType(403)]
         [ProducesResponseType(500)]
+        [AllowAnonymous]
         public ActionResult<IEnumerable<StudentDTO>> GetStudents()
         {
             var Students = new List<StudentDTO>();
@@ -50,7 +50,7 @@ namespace CollegeApp.Controllers
         [ProducesResponseType(403)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
-        [AllowAnonymous]
+        [Authorize(Roles = "Superadmin, Admin, User")]
         public ActionResult<StudentDTO> GetStudentById(int id)
         {
             if(id <= 0)
@@ -79,6 +79,7 @@ namespace CollegeApp.Controllers
         [ProducesResponseType(403)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
+        [Authorize(Roles = "Superadmin, Admin, User")]
         public ActionResult<StudentDTO> GetStudentByName(string name)
         {
             if (name == null)
@@ -108,6 +109,7 @@ namespace CollegeApp.Controllers
         [ProducesResponseType(403)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
+        [Authorize(Roles = "Superadmin")]
         public ActionResult<bool> DeleteStudent(int id)
         {
             if(id <= 0)
@@ -130,6 +132,7 @@ namespace CollegeApp.Controllers
         [ProducesResponseType(401)]
         [ProducesResponseType(403)]
         [ProducesResponseType(500)]
+        [Authorize(Roles = "Superadmin, Admin")]
         public ActionResult<StudentDTO> CreateStudent([FromBody] StudentDTO model)
         {
             if (model == null )
@@ -157,6 +160,7 @@ namespace CollegeApp.Controllers
         [ProducesResponseType(403)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
+        [Authorize(Roles = "Superadmin, Admin")]
         public ActionResult UpdateStudent([FromBody] StudentDTO model)
         {
             if(model == null || model.Id <=0)
@@ -184,6 +188,7 @@ namespace CollegeApp.Controllers
         [ProducesResponseType(403)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
+        [Authorize(Roles = "Superadmin, Admin")]
         public ActionResult UpdateStudentPartial(int id, [FromBody] JsonPatchDocument<StudentDTO> patchDocument)
         {
             if (patchDocument == null || id <= 0)
